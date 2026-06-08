@@ -126,7 +126,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 2000;
+            z-index: 5000; /* Shifted higher to verify stack locks */
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), pointer-events 0.8s;
         }
         .balloon-intro-zone.hidden {
@@ -304,7 +304,7 @@
             padding: 40px 60px;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
-            margin: 15px auto 0 auto;
+            margin: -10px auto 0 auto;
             position: relative;
             z-index: 5;
             max-width: 850px;
@@ -447,7 +447,7 @@
         .arrow-prev { left: -30px; }
         .arrow-next { right: -30px; }
 
-        /* --- UPDATED RE-ENGINEERING: Live Video Thumbnails Section --- */
+        /* --- Live Video Thumbnails Section --- */
         .cinema-grid {
             display: flex;
             gap: 30px;
@@ -473,8 +473,6 @@
             box-shadow: 0 20px 40px rgba(216, 27, 96, 0.15);
             background: rgba(255, 255, 255, 0.85);
         }
-        
-        /* Updated layout architecture to contain a fully responsive video object frame wrapper */
         .video-thumbnail-box {
             width: 100%;
             height: 160px;
@@ -486,8 +484,6 @@
             align-items: center;
             justify-content: center;
         }
-
-        /* Displays actual looping videos on the main screen background layer natively */
         .video-thumbnail-box video.preview-stream {
             position: absolute;
             width: 100%;
@@ -496,8 +492,6 @@
             opacity: 0.85;
             z-index: 1;
         }
-        
-        /* Interactive floating play layer button positioning */
         .play-overlay-icon {
             position: relative;
             z-index: 5;
@@ -511,7 +505,7 @@
             font-size: 1.2rem;
             color: white;
             box-shadow: 0 5px 15px rgba(255,117,140,0.4);
-            pointer-events: none; /* Passes clicks directly down to card wrapper launch functions */
+            pointer-events: none;
         }
         .cinema-card h4 {
             margin-top: 15px;
@@ -519,55 +513,80 @@
             font-weight: 700;
         }
 
-        /* Video Modal Overlay Popup */
+        /* --- CRITICAL FIX: Premium Laptop Optimized Video Modal --- */
         .video-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.85); /* Darker backdrop to make videos pop */
             backdrop-filter: blur(15px);
-            z-index: 3000;
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 99999 !important; /* Absolute top indexing layer to avoid getting buried */
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .video-modal.active {
             opacity: 1;
             pointer-events: auto;
         }
         .modal-content-box {
-            background: white;
-            padding: 10px;
+            background: #111111;
+            padding: 8px;
             border-radius: 24px;
-            width: 90%;
-            max-width: 700px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            width: 85%;
+            max-width: 680px; /* Reduced container slightly so it fits perfectly on laptops */
+            max-height: 85vh; /* Prevents overflow clipping on lower resolutions */
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
             position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-modal.active .modal-content-box {
+            transform: scale(1);
         }
         .modal-content-box video {
             width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
             border-radius: 16px;
             display: block;
+            background: #000;
         }
+        
+        /* Premium Close Button Positioned Perfectly over Frame Corners */
         .close-modal-btn {
             position: absolute;
             top: -20px;
             right: -20px;
-            background: #ff758c;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
             color: white;
-            border: none;
-            width: 44px;
-            height: 44px;
+            border: 2px solid white;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(255,117,140,0.5);
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.2s ease;
+        }
+        .close-modal-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: white;
+            color: #ff758c;
         }
 
         /* --- Live Heart Wish Note Guestbook Styles --- */
@@ -653,48 +672,79 @@
             background: rgba(255, 255, 255, 0.3);
             border: 2px dashed rgba(255,255,255,0.6);
             border-radius: 24px;
-            min-height: 360px;
+            height: 480px; 
+            overflow-y: auto; 
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 25px;
             padding: 25px;
             align-content: flex-start;
             position: relative;
         }
+
+        .board-wall-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .board-wall-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .board-wall-grid::-webkit-scrollbar-thumb {
+            background: rgba(216, 27, 96, 0.2);
+            border-radius: 10px;
+        }
+        .board-wall-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(216, 27, 96, 0.4);
+        }
+
+        /* --- Classic Flat Heart Card Layout --- */
         .heart-post-it {
-            width: 150px;
-            height: 140px;
-            padding: 20px 15px;
+            width: 160px;
+            height: 150px;
+            padding: 30px 15px; 
             text-align: center;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
-            line-height: 1.2;
             color: #2c3e50;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
             position: relative;
+            transform: rotate(-2deg);
             animation: spawnSticky 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            clip-path: path('M 75,15 C 60,-5 10,-5 10,30 C 10,65 75,120 75,125 C 75,120 140,65 140,30 C 140,-5 90,-5 75,15 Z');
+            cursor: pointer; 
+            
+            clip-path: path('M 80,25 C 65,-5 10,-5 10,40 C 10,80 80,130 80,135 C 80,130 150,80 150,40 C 150,-5 95,-5 80,25 Z');
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+        .heart-post-it:hover {
+            transform: scale(1.08) rotate(1deg) !important;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            z-index: 5;
+        }
+        
         .heart-post-it p {
-            max-height: 70px;
-            overflow: hidden;
-            margin-top: -15px;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.2;
             word-break: break-word;
+            margin-top: -15px; 
+            max-height: 55px;
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            pointer-events: none;
         }
 
         .delete-note-btn {
             position: absolute;
-            top: 22px;
+            top: 25px;
             right: 25px;
-            background: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.9);
             border: none;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             font-size: 10px;
             cursor: pointer;
             display: flex;
@@ -703,10 +753,89 @@
             color: #d81b60;
             font-weight: bold;
             z-index: 10;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .delete-note-btn:hover {
+            background: #ffffff;
+            transform: scale(1.1);
+        }
+
+        /* --- Expandable Heart Wish Note Modal --- */
+        .wish-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 999999 !important; /* Stacked right above video modules for clear viewports */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .wish-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .wish-modal-card {
             background: white;
+            padding: 40px 30px;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+            position: relative;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .wish-modal-overlay.active .wish-modal-card {
+            transform: scale(1);
+        }
+        .wish-modal-heart-icon {
+            font-size: 3.5rem;
+            animation: pulseHeart 1.5s infinite alternate;
+        }
+        @keyframes pulseHeart {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.12); }
+        }
+        .wish-modal-text {
+            font-family: 'Caveat', cursive;
+            font-size: 2.2rem;
+            line-height: 1.3;
+            color: #2c3e50;
+            word-break: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0 10px;
+        }
+        .close-wish-modal-btn {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,117,140,0.4);
+            transition: all 0.2s ease;
+        }
+        .close-wish-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,117,140,0.6);
         }
 
         @keyframes spawnSticky {
@@ -799,7 +928,7 @@
             .hero-anchor { padding-top: 150px; }
             .guestbook-workspace { flex-direction: column; align-items: center; }
             .wish-form-card { width: 100%; }
-            .board-wall-grid { width: 100%; }
+            .board-wall-grid { width: 100%; height: 380px; } 
         }
     </style>
 </head>
@@ -918,23 +1047,48 @@
     <section id="cinema-station">
         <h2 class="section-headline">Our Virtual Cinema Box</h2>
         <div class="cinema-grid">
-            
-            <div class="cinema-card" onclick="launchCinemaModal('Funny.mp4')">
+            <div class="cinema-card" onclick="launchCinemaModal('funny.mp4')">
+                <div class="video-thumbnail-box">
+                    <video class="preview-stream" src="funny.mp4" autoplay loop muted playsinline></video>
+                    <div class="play-overlay-icon">▶</div>
+                </div>
+                <h4>Our Funniest Days 😍</h4>
+            </div>
+            <div class="cinema-card" onclick="launchCinemaModal('funny2.mp4')">
+                <div class="video-thumbnail-box">
+                    <video class="preview-stream" src="funny2.mp4" autoplay loop muted playsinline></video>
+                    <div class="play-overlay-icon">▶</div>
+                </div>
+                <h4>Just Using Snap Filters 😅 </h4>
+            </div>
+            <div class="cinema-card" onclick="launchCinemaModal('funny3.mp4')">
+                <div class="video-thumbnail-box">
+                    <video class="preview-stream" src="funny3.mp4" autoplay loop muted playsinline></video>
+                    <div class="play-overlay-icon">▶</div>
+                </div>
+                <h4>Me sangaychi an tu video bnvaychi 😅</h4>
+            </div>
+            <div class="cinema-card" onclick="launchCinemaModal('funny4.mp4')">
                 <div class="video-thumbnail-box">
                     <video class="preview-stream" src="video1.mp4" autoplay loop muted playsinline></video>
                     <div class="play-overlay-icon">▶</div>
                 </div>
-                <h4>Our Funniest Days </h4>
+                <h4>I think this the first video of us 😚 </h4>
             </div>
-            
-            <div class="cinema-card" onclick="launchCinemaModal('funny2.mp4')">
+            <div class="cinema-card" onclick="launchCinemaModal('funny5.mp4')">
                 <div class="video-thumbnail-box">
-                    <video class="preview-stream" src="video2.mp4" autoplay loop muted playsinline></video>
+                    <video class="preview-stream" src="video1.mp4" autoplay loop muted playsinline></video>
                     <div class="play-overlay-icon">▶</div>
                 </div>
-                <h4>Just Using Snap Filters </h4>
+                <h4>chl chale vahi 🥹</h4>
             </div>
-            
+            <div class="cinema-card" onclick="launchCinemaModal('funny6.mp4')">
+                <div class="video-thumbnail-box">
+                    <video class="preview-stream" src="video1.mp4" autoplay loop muted playsinline></video>
+                    <div class="play-overlay-icon">▶</div>
+                </div>
+                <h4>Tu he meri hai sari jami 🥰🥰</h4>
+            </div>
         </div>
     </section>
 
@@ -978,9 +1132,98 @@
         </div>
     </section>
 
+    <div class="wish-modal-overlay" id="wishModal" onclick="closeWishModal()">
+        <div class="wish-modal-card" id="wishModalCard" onclick="event.stopPropagation()">
+            <div class="wish-modal-heart-icon" id="wishModalHeart">💖</div>
+            <div class="wish-modal-text" id="wishModalText">Your message appears here...</div>
+            <button class="close-wish-modal-btn" onclick="closeWishModal()">Close Note 🌸</button>
+        </div>
+    </div>
+
     <footer>
     ✨ | For My Best Friend Forever | kaju | janude | bff | sweetheart | ✨
     </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Web App Configuration credentials injected from project settings console
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0Z-FVoFoxH_kPHozvZZq-QLfm9izyFiM",
+            authDomain: "wish-b80ab.firebaseapp.com",
+            projectId: "wish-b80ab",
+            storageBucket: "wish-b80ab.firebasestorage.app",
+            messagingSenderId: "577299671749",
+            appId: "1:577299671749:web:28b467b6eb6d89a81d9eac"
+        };
+
+        // Initialize connection layers
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const wishesCollection = collection(db, "wishes");
+
+        // Global variable wrapper to cleanly bind with non-module style selection listeners downstream
+        window.targetedColorHex = '#ffb3c6';
+
+        // Continuous Sync Pipeline: Hooks real-time backend updates to dynamically draw screen post-its
+        const sortedQuery = query(wishesCollection, orderBy("timestamp", "asc"));
+        onSnapshot(sortedQuery, (snapshot) => {
+            const boardGrid = document.getElementById('stickyBoardGrid');
+            boardGrid.innerHTML = ""; 
+
+            snapshot.forEach((docEntry) => {
+                const wish = docEntry.data();
+                const stickyNode = document.createElement('div');
+                stickyNode.className = 'heart-post-it';
+                stickyNode.style.backgroundColor = wish.color;
+                stickyNode.style.setProperty('--rotation', wish.rotation);
+
+                // Modified layout generation: Triggers custom view modal instead of scaling parent frames directly
+                stickyNode.setAttribute('onclick', `openWishModal(this, \`${escapeJsString(wish.text)}\`, '${wish.color}')`);
+
+                stickyNode.innerHTML = `
+                    <button class="delete-note-btn" onclick="event.stopPropagation(); removeWishNodeCloud('${docEntry.id}')">✕</button>
+                    <p>${wish.text}</p>
+                `;
+                boardGrid.appendChild(stickyNode);
+            });
+        });
+
+        // Submit message action trigger routing content entries directly to cloud firestore cluster arrays
+        window.publishStickyNote = async function() {
+            const inputField = document.getElementById('wishMessageInput');
+            if(!inputField.value.trim()) {
+                alert("Please enter a heartfelt wish or reply first! 😊");
+                return;
+            }
+
+            try {
+                await addDoc(wishesCollection, {
+                    text: inputField.value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+                    color: window.targetedColorHex,
+                    rotation: (Math.random() * 12 - 6) + 'deg',
+                    timestamp: Date.now()
+                });
+                inputField.value = "";
+            } catch (err) {
+                console.error("Cloud document submission faulted: ", err);
+            }
+        };
+
+        // Purge individual documentation nodes securely directly within the targeted production grid
+        window.removeWishNodeCloud = async function(docId) {
+            try {
+                await deleteDoc(doc(db, "wishes", docId));
+            } catch (err) {
+                console.error("Cloud removal sequence faulted: ", err);
+            }
+        };
+
+        function escapeJsString(str) {
+            return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+        }
+    </script>
 
     <script>
         /* 1. Canvas Interactive Micro Sparkles & Floating Hearts Engine */
@@ -1122,68 +1365,30 @@
             cinemaModal.classList.remove('active');
         }
 
-        /* --- CORE MEMORY ENGINE UPGRADE: Saved Wish Board System --- */
-        let targetedColorHex = '#ffb3c6';
-        let savedWishesArray = JSON.parse(localStorage.getItem('bestieWishesDB')) || [];
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderStoredWishes();
-        });
-
+        /* Bind modular color mapping switches */
         function chooseStickyColor(dotElement, hexCode) {
             document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
             dotElement.classList.add('active');
-            targetedColorHex = hexCode;
+            window.targetedColorHex = hexCode;
         }
 
-        function publishStickyNote() {
-            const inputField = document.getElementById('wishMessageInput');
+        /* --- Expandable Wish Pop-up Engine Logic --- */
+        const wishModal = document.getElementById('wishModal');
+        const wishModalCard = document.getElementById('wishModalCard');
+        const wishModalText = document.getElementById('wishModalText');
+        const wishModalHeart = document.getElementById('wishModalHeart');
+
+        function openWishModal(element, messageText, hexColor) {
+            wishModalText.innerHTML = messageText;
             
-            if(!inputField.value.trim()) {
-                alert("Please enter a heartfelt wish or reply first! 😊");
-                return;
-            }
-
-            const newWishObject = {
-                id: Date.now(),
-                text: inputField.value,
-                color: targetedColorHex,
-                rotation: (Math.random() * 12 - 6) + 'deg'
-            };
-
-            savedWishesArray.push(newWishObject);
-            localStorage.setItem('bestieWishesDB', JSON.stringify(savedWishesArray));
+            wishModalCard.style.borderTop = `6px solid ${hexColor}`;
+            wishModalHeart.style.textShadow = `0 4px 15px ${hexColor}`;
             
-            renderStoredWishes();
-            inputField.value = "";
+            wishModal.classList.add('active');
         }
 
-        function removeWishNode(wishId) {
-            savedWishesArray = savedWishesArray.filter(wish => wish.id !== wishId);
-            localStorage.setItem('bestieWishesDB', JSON.stringify(savedWishesArray));
-            renderStoredWishes();
-        }
-
-        function renderStoredWishes() {
-            const boardGrid = document.getElementById('stickyBoardGrid');
-            boardGrid.innerHTML = ""; 
-
-            savedWishesArray.forEach(wish => {
-                const stickyNode = document.createElement('div');
-                stickyNode.className = 'heart-post-it';
-                stickyNode.style.backgroundColor = wish.color;
-                stickyNode.style.setProperty('--rotation', wish.rotation);
-
-                stickyNode.innerHTML = `
-                    <button class="delete-note-btn" onclick="removeWishNode(${wish.id})">✕</button>
-                    <p>${escapeHtmlString(wish.text)}</p>
-                `;
-                boardGrid.appendChild(stickyNode);
-            });
-        }
-
-        function escapeHtmlString(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        function closeWishModal() {
+            wishModal.classList.remove('active');
         }
 
         /* 5. Luxury Golden Ticket Scratch Surface Canvas Mechanics */
