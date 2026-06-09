@@ -1427,6 +1427,7 @@
                 stickyNode.style.backgroundColor = wish.color;
                 stickyNode.style.setProperty('--rotation', wish.rotation);
 
+                // Default fallbacks if legacy entries don't have name/date fields
                 const senderName = wish.name ? wish.name : "Anonymous";
                 const displayTime = wish.formattedDate ? wish.formattedDate : "";
 
@@ -1455,12 +1456,12 @@
 
             const senderNameValue = nameField.value.trim() ? nameField.value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Anonymous";
 
+            // Generate clean date format: e.g., "Jun 9, 10:06 AM"
             const currentDateTime = new Date();
             const formatOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
             const timestampString = new Intl.DateTimeFormat('en-US', formatOptions).format(currentDateTime);
 
             try {
-                // 1. Upload the data to FireStore
                 await addDoc(wishesCollection, {
                     text: inputField.value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
                     name: senderNameValue,
@@ -1469,15 +1470,6 @@
                     rotation: (Math.random() * 12 - 6) + 'deg',
                     timestamp: Date.now()
                 });
-
-                // 2. Open WhatsApp automatically to notify her!
-                const whatsappText = encodeURIComponent(`Hey! I just pinned a new heart note on our wall! 💖\n\n- From: ${senderNameValue}\nCheck it out here! ✨`);
-                const whatsappUrl = `https://api.whatsapp.com/send?phone=917666188447&text=${whatsappText}`;
-                
-                // Triggers browser to seamlessly redirect or spawn the chat interface window
-                window.open(whatsappUrl, '_blank');
-
-                // Clear input values safely
                 inputField.value = "";
                 nameField.value = "";
             } catch (err) {
