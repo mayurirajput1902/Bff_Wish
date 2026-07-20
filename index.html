@@ -1088,26 +1088,324 @@
             border-top: 1px solid rgba(255,255,255,0.5);
         }
 
-        /* --- Responsive Viewport Adjustments --- */
+        /* --- Ultra-Responsive Mobile & Tablet Adjustments --- */
         @media (max-width: 1024px) {
-            .gallery-slide-bundle { flex-wrap: wrap; justify-content: center; }
-            .frame-small { margin-top: 0; width: 260px; height: 320px; }
-            .frame-large { width: 300px; height: 380px; }
-            .gallery-container { min-height: 900px; }
-            .scratch-vault { width: 90%; height: 320px; }
-            .back-layered-text { font-size: 7rem; }
-            .front-glass-manifesto { padding: 30px; }
-            .slider-arrow { display: none; }
-            .photo-string-container { width: 100vw; top: -110px; padding: 0 10px; }
-            .hanging-polaroid { width: 85px; padding: 6px 6px 14px 6px; }
-            .hanging-polaroid img { height: 75px; }
-            .hero-anchor { padding-top: 150px; }
-            .guestbook-workspace { flex-direction: column; align-items: center; }
-            .wish-form-card { width: 100%; }
-            .board-wall-grid { width: 100%; height: 380px; } 
-            .scrapbook-wrapper { width: 95vw; height: 420px; }
-            .scrapbook-letter { font-size: 1.5rem; }
-            .cover-title { font-size: 2.5rem; }
+            /* 1. Typography Resizing */
+            .back-layered-text { 
+                font-size: 5.5rem !important; 
+                line-height: 1;
+            }
+            .front-glass-manifesto h1 {
+                font-size: 2rem !important;
+            }
+            .section-headline {
+                font-size: 3rem !important;
+            }
+            
+            /* 2. Hero Component Re-spacing */
+            .hero-anchor { 
+                padding-top: 180px; 
+            }
+            .photo-string-container { 
+                width: 100vw; 
+                top: -130px; 
+                padding: 0 10px; 
+            }
+            .hanging-polaroid { 
+                width: 16vw; 
+                max-width: 80px;
+                padding: 5px 5px 12px 5px; 
+            }
+            .hanging-polaroid img { 
+                height: 70px; 
+            }
+            .front-glass-manifesto { 
+                padding: 20px; 
+                width: 95%;
+            }
+
+            /* 3. Memories Carousel Responsive Fix */
+            .gallery-slide-bundle { 
+                flex-direction: column;
+                align-items: center; 
+                gap: 20px;
+            }
+            .frame-small, .frame-large { 
+                width: 85vw !important; 
+                height: 320px !important; 
+                margin-top: 0 !important;
+            }
+            .frame-caption-card {
+                max-width: 85vw;
+            }
+            .slider-arrow { 
+                display: none; 
+            }
+
+            /* 4. 3D Scrapbook Mobile Compression */
+            .scrapbook-wrapper { 
+                width: 90vw; 
+                height: 380px; 
+            }
+            .scrapbook-letter { 
+                font-size: 1.3rem !important; 
+                padding: 0 5px;
+            }
+            .cover-title { 
+                font-size: 2.2rem !important; 
+            }
+
+            /* 5. Scratch Vault Fluid Architecture */
+            .scratch-vault { 
+                width: 92vw; 
+                height: 280px; 
+            }
+            .underlying-letter {
+                padding: 15px;
+            }
+            .underlying-letter h3 {
+                font-size: 1.8rem;
+            }
+            .underlying-letter p {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+
+            /* 6. Guestbook Layout Stack */
+            .guestbook-workspace { 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            .wish-form-card { 
+                width: 100%; 
+            }
+            .board-wall-grid { 
+                width: 100%; 
+                height: 400px; 
+            } 
+            
+            /* 7. Floating Widget Adjustment */
+            .music-widget {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 16px;
+            }
+        }
+
+        /* --- Opening Gift Section --- */
+        #gift-opening-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 2000; /* above ambient canvas but below balloon intro */
+            background: linear-gradient(135deg, rgba(243, 229, 245, 0.9), rgba(252, 228, 236, 0.9), rgba(251, 194, 235, 0.9), rgba(166, 193, 238, 0.9));
+        }
+
+        .countdown-container {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .countdown-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem;
+            color: #d81b60;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .time-box .time-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #8e24aa;
+            line-height: 1;
+        }
+
+        .time-box .time-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #d81b60;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .gift-boxes-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .gift-box-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            animation: floatBox 3s ease-in-out infinite alternate;
+        }
+
+        .gift-box-wrapper:nth-child(2) { animation-delay: 1s; }
+        .gift-box-wrapper:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes floatBox {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        .gift-box-wrapper:hover {
+            animation-play-state: paused;
+            transform: scale(1.1) translateY(-10px);
+        }
+
+        .gift-box-wrapper.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(80%);
+            transform: scale(0.95);
+        }
+
+        .gift-box {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(255, 117, 140, 0.3);
+            border: 2px solid #ff758c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 15px 35px rgba(255, 117, 140, 0.4), 0 0 15px rgba(255, 117, 140, 0.3); }
+            100% { box-shadow: 0 15px 35px rgba(255, 117, 140, 0.6), 0 0 45px rgba(255, 117, 140, 0.8); }
+        }
+
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            height: 30px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            width: 170px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 5px;
+            border: 2px solid #ff758c;
+            z-index: 3;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: top right;
+        }
+
+        .gift-box-wrapper.opened .gift-lid {
+            transform: rotate(-110deg) translate(-20px, -20px);
+            opacity: 0;
+        }
+
+        .gift-reveal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: 'Caveat', cursive;
+            color: #fff;
+            z-index: 4;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-delay: 0.3s;
+            text-shadow: 0 0 15px #d81b60, 0 0 30px #ff758c, 0 0 45px #ff758c;
+        }
+
+        .gift-box-wrapper.opened .gift-reveal {
+            transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+            opacity: 1;
+        }
+
+        .gift-message-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .gift-message-card p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #4a148c;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-timer {
+                flex-wrap: wrap;
+            }
+            .time-box {
+                min-width: 80px;
+                padding: 10px 15px;
+            }
+            .time-box .time-value {
+                font-size: 2rem;
+            }
+            .gift-message-card p {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -1130,6 +1428,55 @@
         <button class="music-trigger" id="audioToggleBtn">▶</button>
         <audio id="celebrationTrack" src="I_love_you.mp3" loop></audio>
     </div>
+
+    <section id="gift-opening-section">
+        <div class="countdown-container">
+            <h2 class="countdown-title">Countdown to Friendship Day!</h2>
+            <div class="countdown-timer" id="friendshipCountdown">
+                <div class="time-box">
+                    <div class="time-value" id="cd-days">00</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="cd-hours">00</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="cd-minutes">00</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="cd-seconds">00</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gift-boxes-container" id="giftBoxesContainer">
+            <div class="gift-box-wrapper" onclick="openGiftBox(this, 'A')">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-reveal">A</div>
+                </div>
+            </div>
+            <div class="gift-box-wrapper" onclick="openGiftBox(this, 'B')">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-reveal">B</div>
+                </div>
+            </div>
+            <div class="gift-box-wrapper" onclick="openGiftBox(this, 'C')">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-reveal">C</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gift-message-card">
+            <p>"Since I couldn't decide what to get you for Friendship Day 🤔💭, I'm leaving it up to you! Pick one of these three mystery boxes 🎁🎀. As soon as it opens, screenshot the letter and send it my way 📲. Let's see what you get! 🥰✨"</p>
+        </div>
+    </section>
 
     <section class="hero-anchor">
         <div class="hero-composition">
@@ -1427,7 +1774,6 @@
                 stickyNode.style.backgroundColor = wish.color;
                 stickyNode.style.setProperty('--rotation', wish.rotation);
 
-                // Default fallbacks if legacy entries don't have name/date fields
                 const senderName = wish.name ? wish.name : "Anonymous";
                 const displayTime = wish.formattedDate ? wish.formattedDate : "";
 
@@ -1456,7 +1802,6 @@
 
             const senderNameValue = nameField.value.trim() ? nameField.value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Anonymous";
 
-            // Generate clean date format: e.g., "Jun 9, 10:06 AM"
             const currentDateTime = new Date();
             const formatOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
             const timestampString = new Intl.DateTimeFormat('en-US', formatOptions).format(currentDateTime);
@@ -1470,6 +1815,12 @@
                     rotation: (Math.random() * 12 - 6) + 'deg',
                     timestamp: Date.now()
                 });
+
+                const whatsappText = encodeURIComponent(`Hey! I just pinned a new heart note on our wall! 💖\n\n- From: ${senderNameValue}\nCheck it out here! ✨`);
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=917666188447&text=${whatsappText}`;
+                
+                window.open(whatsappUrl, '_blank');
+
                 inputField.value = "";
                 nameField.value = "";
             } catch (err) {
@@ -1500,7 +1851,17 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', setCanvasDimensions);
+        window.addEventListener('resize', () => {
+            setCanvasDimensions();
+            
+            // Real-time resizing check for the scratch ticket canvas layer on mobile viewports
+            const vaultBox = document.querySelector('.scratch-vault');
+            if (vaultBox && window.innerWidth <= 1024) {
+                scratchSurface.width = vaultBox.clientWidth;
+                scratchSurface.height = vaultBox.clientHeight;
+                draftScratchCover();
+            }
+        });
         setCanvasDimensions();
 
         class AtmosphericParticle {
@@ -1713,6 +2074,12 @@
             scratchCtx.fillText("SCRATCH TO DECRYPT CONFESSION", scratchSurface.width / 2, scratchSurface.height / 2 + 25);
         }
         
+        // Initializer block mapping dimensions on launch stage safely
+        const vaultBox = document.querySelector('.scratch-vault');
+        if(vaultBox && window.innerWidth <= 1024) {
+            scratchSurface.width = vaultBox.clientWidth;
+            scratchSurface.height = vaultBox.clientHeight;
+        }
         draftScratchCover();
 
         function executeScratchBrush(e) {
@@ -1742,6 +2109,89 @@
         scratchSurface.addEventListener('touchstart', () => writeLock = true);
         window.addEventListener('touchend', () => writeLock = false);
         scratchSurface.addEventListener('touchmove', executeScratchBrush);
+
+        /* --- Gift Opening Section Logic --- */
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date();
+            let targetDate = new Date(now.getFullYear(), 7, 2, 0, 0, 0); // Month 7 is August
+
+            if (now.getTime() > targetDate.getTime()) {
+                targetDate.setFullYear(now.getFullYear() + 1);
+            }
+
+            const difference = targetDate.getTime() - now.getTime();
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('cd-minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('cd-seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Confetti Burst Logic
+        function createConfettiBurst(wrapper) {
+            const colors = ['#ff758c', '#feca57', '#a6c1ee', '#ffb3c6', '#ffffff'];
+            for (let i = 0; i < 60; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = Math.random() * 8 + 4 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.top = '50%';
+                confetti.style.left = '50%';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '10';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 100 + 50;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 50;
+                const rot = Math.random() * 360;
+
+                confetti.animate([
+                    { transform: `translate(-50%, -50%) scale(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5) rotate(${rot}deg)`, opacity: 1, offset: 0.7 },
+                    { transform: `translate(calc(-50% + ${tx*1.2}px), calc(-50% + ${ty*1.2 + 50}px)) scale(0) rotate(${rot*2}deg)`, opacity: 0 }
+                ], {
+                    duration: 1000 + Math.random() * 800,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                    fill: 'forwards'
+                });
+
+                wrapper.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2500);
+            }
+        }
+
+        // Gift Box Logic
+        let giftBoxOpened = false;
+        window.openGiftBox = function(element, letter) {
+            if (giftBoxOpened) return;
+            giftBoxOpened = true;
+
+            // Trigger confetti burst
+            createConfettiBurst(element);
+
+            // Open the clicked box
+            element.classList.add('opened');
+
+            // Disable the other boxes
+            const allBoxes = document.querySelectorAll('.gift-box-wrapper');
+            allBoxes.forEach(box => {
+                if (box !== element) {
+                    box.classList.add('disabled');
+                }
+            });
+        };
 
     </script>
 </body>
